@@ -20,7 +20,9 @@ class Task(object):
     
     def q1(self):
         query = '''
-
+            SELECT firstName, lastName
+            FROM students
+            WHERE yearStarted = 2019;
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -29,7 +31,9 @@ class Task(object):
 
     def q2(self):
         query = '''
-
+        SELECT firstName, lastName 
+        FROM Students 
+        WHERE sid IN (SELECT sid FROM Majors WHERE major IN ('CS', 'COE'));
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -37,7 +41,9 @@ class Task(object):
 
     def q3(self):
         query = '''
-
+        SELECT Count(*) As numStudents
+        FROM majors
+        WHERE major = 'ASTRO'
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -46,7 +52,11 @@ class Task(object):
 
     def q4(self):
         query = '''
-
+        SELECT s.firstName, s.lastName, s.yearStarted, SUM(g.credits) AS totalCredits
+        FROM Students s
+        JOIN Grades g ON s.sid = g.sid
+        WHERE g.grade <> 0
+        GROUP BY s.sid, s.firstName, s.lastName, s.yearStarted;
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -54,7 +64,9 @@ class Task(object):
 
     def q5(self):
         query = '''
-
+        SELECT professor, COUNT(*) AS numCourses 
+        FROM Courses 
+        GROUP BY professor 
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -62,7 +74,9 @@ class Task(object):
 
     def q6(self):
         query = '''
-
+        SELECT cid, grade, COUNT(*) AS count 
+        FROM Grades 
+        GROUP BY cid, grade
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -70,7 +84,10 @@ class Task(object):
 
     def q7(self):
         query = '''
-
+        SELECT cid, grade, COUNT(*) AS count 
+        FROM Grades 
+        GROUP BY cid, grade 
+        ORDER BY cid DESC 
         '''
         self.cur.execute(query)
         all_rows = self.cur.fetchall()
@@ -102,3 +119,4 @@ if __name__ == "__main__":
     rows = task.q7()
     print(rows)
     print()
+
